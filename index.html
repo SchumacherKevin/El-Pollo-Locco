@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="img/6_salsa_bottle/2_salsa_bottle_on_ground.png" type="image/x-icon">
+    <link rel="favicon" href="img/6_salsa_bottle/2_salsa_bottle_on_ground.png" type="image/x-icon">
     <title>El Pollo Locco</title>
+    <script src="js/models/moveable-objekt.class.js"></script>
     <script src="js/game.js"></script>
 </head>
-<body>
+<body onload="init()">
     
     <h1>El Pollo Locco</h1>
 
-    <canvas width="720" height="400">
+    <canvas id="gameCanvas" width="720" height="400">
     </canvas>
 </body>
 </html>
