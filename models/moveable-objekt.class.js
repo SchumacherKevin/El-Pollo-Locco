@@ -35,6 +35,33 @@ class MoveableObjekt {
     this.currentImage++;
   }
 
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+
+  drawFrame(ctx) {
+    if (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof Endbosslevel1
+    ) {
+      ctx.beginPath();
+      ctx.lineWidth = "1";
+      ctx.strokeStyle = "red";
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
+  }
+
+  iscolliding(movObj) {
+    return (
+      this.x + this.width > movObj.x &&
+      this.y + this.height > movObj.y &&
+      this.x < movObj.x + movObj.width &&
+      this.y < movObj.y + movObj.height
+    );
+  }
+
   moveRight() {
     this.x += this.speed;
   }

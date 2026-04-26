@@ -1,4 +1,4 @@
-class Charakter extends MoveableObjekt {
+class Character extends MoveableObjekt {
   height = 280;
   y = 200;
   Images_Idle = [
