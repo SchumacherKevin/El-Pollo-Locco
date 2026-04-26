@@ -22,7 +22,7 @@ class Charakter extends MoveableObjekt {
     "img/2_character_pepe/2_walk/W-26.png",
   ];
   world;
-  speed = 0.3;
+  speed = 10;
 
   constructor() {
     super();
@@ -54,6 +54,7 @@ class Charakter extends MoveableObjekt {
         this.img = this.imageCache[path];
         this.currentImage++;
       }
+      this.world.camera_x = -this.x + 100;
     }, 1000 / 10);
   }
 
