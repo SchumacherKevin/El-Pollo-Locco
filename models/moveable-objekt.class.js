@@ -8,6 +8,12 @@ class MoveableObjekt {
   currentImage = 0;
   speed = 0.15;
   otherDirection = false;
+  speedY = 0;
+  acceleration = 2.5;
+
+  isAboveGround() {
+    return this.y < 200;
+  }
 
   loadImage(path) {
     this.img = new Image();
@@ -35,5 +41,20 @@ class MoveableObjekt {
 
   moveLeft() {
     this.x -= this.speed;
+  }
+
+  jump() {
+    if (!this.isAboveGround()) {
+      this.speedY = 30;
+    }
+  }
+
+  applyGravity() {
+    setInterval(() => {
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+    }, 1000 / 25);
   }
 }
