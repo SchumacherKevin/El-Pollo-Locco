@@ -10,6 +10,8 @@ class MoveableObjekt {
   otherDirection = false;
   speedY = 0;
   acceleration = 2.5;
+  hitpoints = 100;
+  lastHit = 0;
 
   isAboveGround() {
     return this.y < 200;
@@ -74,6 +76,23 @@ class MoveableObjekt {
     if (!this.isAboveGround()) {
       this.speedY = 30;
     }
+  }
+
+  hit() {
+    this.hitpoints -= 5;
+    if (this.hitpoints < 0) {
+      this.hitpoints = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
+  isHurt() {
+    return new Date().getTime() - this.lastHit < 1000;
+  }
+
+  isDead() {
+    return this.hitpoints == 0;
   }
 
   applyGravity() {
