@@ -34,25 +34,19 @@ class Charakter extends MoveableObjekt {
 
   animate() {
     setInterval(() => {
-      if (this.world.keyboard.RIGHT) {
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.otherDirection = false;
         this.moveRight();
       }
-      if (this.world.keyboard.LEFT) {
+      if (this.world.keyboard.LEFT && this.x > 0) {
         this.otherDirection = true;
         this.moveLeft();
       }
 
       if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        let index = this.currentImage % this.Images_Walk.length;
-        let path = this.Images_Walk[index];
-        this.img = this.imageCache[path];
-        this.currentImage++;
+        this.playAnimation(this.Images_Walk);
       } else {
-        let index = this.currentImage % this.Images_Idle.length;
-        let path = this.Images_Idle[index];
-        this.img = this.imageCache[path];
-        this.currentImage++;
+        this.playAnimation(this.Images_Idle);
       }
       this.world.camera_x = -this.x + 100;
     }, 1000 / 10);

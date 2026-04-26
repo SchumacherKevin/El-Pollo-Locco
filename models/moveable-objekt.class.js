@@ -22,6 +22,13 @@ class MoveableObjekt {
     });
   }
 
+  playAnimation(imagesArray) {
+    let index = this.currentImage % imagesArray.length;
+    let path = imagesArray[index];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
+
   moveRight() {
     this.x += this.speed;
   }
