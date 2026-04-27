@@ -16,6 +16,6 @@ class StatusSalsaBottle extends StatusBar {
     this.height = 60;
     this.Images = this.Images_SalsaBottle;
     this.loadImages(this.Images_SalsaBottle);
-    this.setPercentage(100);
+    this.setPercentage(0);
   }
 }
