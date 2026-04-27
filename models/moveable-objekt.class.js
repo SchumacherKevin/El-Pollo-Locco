@@ -8,7 +8,11 @@ class MoveableObjekt extends DrawableObjekt {
   offset = { top: 0, right: 0, bottom: 0, left: 0 };
 
   isAboveGround() {
-    return this.y < 200;
+    if (this instanceof ThrowableObjekt) {
+      return true;
+    } else {
+      return this.y < 200;
+    }
   }
 
   playAnimation(imagesArray) {
