@@ -5,7 +5,9 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
-  statusBar = new StatusBar();
+  statusHitPoints = new StatusHitPoints();
+  statusCoins = new StatusCoins();
+  statusSalsaBottle = new StatusSalsaBottle();
   throwableObjekt = [];
 
   constructor(canvas, keyboard) {
@@ -28,7 +30,7 @@ class World {
         if (this.character.iscolliding(enemy)) {
           if (!this.character.isHurt()) {
             this.character.hit();
-            this.statusBar.setPercentage(this.character.hitpoints);
+            this.statusHitPoints.setPercentage(this.character.hitpoints);
           }
         }
       });
@@ -51,7 +53,9 @@ class World {
     this.addObjektToMap(this.level.backgroundObjects);
 
     this.ctx.translate(-this.camera_x, 0);
-    this.addToMap(this.statusBar);
+    this.addToMap(this.statusHitPoints);
+    this.addToMap(this.statusCoins);
+    this.addToMap(this.statusSalsaBottle);
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjektToMap(this.level.clouds);
