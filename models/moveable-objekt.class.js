@@ -5,6 +5,7 @@ class MoveableObjekt extends DrawableObjekt {
   acceleration = 2.5;
   hitpoints = 100;
   lastHit = 0;
+  offset = { top: 0, right: 0, bottom: 0, left: 0 };
 
   isAboveGround() {
     return this.y < 200;
@@ -17,7 +18,7 @@ class MoveableObjekt extends DrawableObjekt {
     this.currentImage++;
   }
 
-  drawFrame(ctx) {
+  drawFrameOffset(ctx) {
     if (
       this instanceof Character ||
       this instanceof Chicken ||
@@ -26,6 +27,25 @@ class MoveableObjekt extends DrawableObjekt {
       ctx.beginPath();
       ctx.lineWidth = "1";
       ctx.strokeStyle = "red";
+      ctx.rect(
+        this.x + this.offset.left,
+        this.y + this.offset.top,
+        this.width - this.offset.right - this.offset.left,
+        this.height - this.offset.bottom - this.offset.top,
+      );
+      ctx.stroke();
+    }
+  }
+
+  drawFrame(ctx) {
+    if (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof Endbosslevel1
+    ) {
+      ctx.beginPath();
+      ctx.lineWidth = "1";
+      ctx.strokeStyle = "blue";
       ctx.rect(this.x, this.y, this.width, this.height);
       ctx.stroke();
     }
@@ -33,10 +53,30 @@ class MoveableObjekt extends DrawableObjekt {
 
   iscolliding(movObj) {
     return (
-      this.x + this.width > movObj.x &&
-      this.y + this.height > movObj.y &&
-      this.x < movObj.x + movObj.width &&
-      this.y < movObj.y + movObj.height
+      this.x +
+        this.offset.left +
+        this.width -
+        this.offset.right -
+        this.offset.left >
+        movObj.x + movObj.offset.left &&
+      this.y +
+        this.offset.top +
+        this.height -
+        this.offset.bottom -
+        this.offset.top >
+        movObj.y + movObj.offset.top &&
+      this.x + this.offset.left <
+        movObj.x +
+          movObj.offset.left +
+          movObj.width -
+          movObj.offset.right -
+          movObj.offset.left &&
+      this.y + this.offset.top <
+        movObj.y +
+          movObj.offset.top +
+          movObj.height -
+          movObj.offset.bottom -
+          movObj.offset.top
     );
   }
 

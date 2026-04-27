@@ -57,6 +57,7 @@ class World {
 
     movObj.draw(this.ctx);
     movObj.drawFrame(this.ctx);
+    movObj.drawFrameOffset(this.ctx);
 
     if (movObj.otherDirection) {
       this.flipImageBack(movObj);
