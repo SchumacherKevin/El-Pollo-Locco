@@ -1,8 +1,30 @@
+@font-face {
+  font-family: 'Zabars';
+  src: url('fonts/ZABARS/zabars.ttf') format('truetype');
+}
+
 body {
+  color: rgba(194, 19, 19, 0.692);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-image: url('img/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Zabars', sans-serif;
+  flex: 1;
+}
+
+h1 {
+  margin-top: 20px;
+  font-size: 48px;
+}
+
+span {
+  font-size: 32px;
+  margin-top: 10px;
 }
 
 canvas {
