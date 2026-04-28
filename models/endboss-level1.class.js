@@ -8,6 +8,13 @@ class Endbosslevel1 extends MoveableObjekt {
     "img/4_enemie_boss_chicken/1_walk/G3.png",
     "img/4_enemie_boss_chicken/1_walk/G4.png",
   ];
+  offset = {
+    top: 50,
+    right: 50,
+    bottom: 50,
+    left: 50,
+  };
+
   constructor() {
     super();
     this.loadImage("img/4_enemie_boss_chicken/1_walk/G1.png");

@@ -17,6 +17,7 @@ class World {
     this.draw();
     this.setWorld();
     this.checkCollisions();
+    this.checkCollectables();
     this.checkThrow();
   }
 
@@ -46,6 +47,22 @@ class World {
     }, 1000 / 25);
   }
 
+  checkCollectables() {
+    setInterval(() => {
+      this.level.collectables.forEach((collectable, index) => {
+        if (this.character.iscolliding(collectable)) {
+          if (collectable instanceof Coin) {
+            this.statusCoins.setPercentage(this.statusCoins.percentage + 20);
+            this.level.collectables.splice(index, 1);
+          } else if (collectable instanceof SalsaBottle) {
+            this.statusSalsaBottle.setPercentage(this.statusSalsaBottle.percentage + 20);
+            this.level.collectables.splice(index, 1);
+          }
+        }
+      });
+    }, 1000 / 25);
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -60,6 +77,7 @@ class World {
 
     this.addObjektToMap(this.level.clouds);
     this.addObjektToMap(this.level.enemies);
+    this.addObjektToMap(this.level.collectables);
     this.addToMap(this.character);
     this.addObjektToMap(this.throwableObjekt);
 
