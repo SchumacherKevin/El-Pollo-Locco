@@ -28,7 +28,8 @@ class DrawableObjekt {
     if (
       this instanceof Character ||
       this instanceof Chicken ||
-      this instanceof Endbosslevel1
+      this instanceof Endbosslevel1 ||
+      this instanceof ChickenSmall
     ) {
       ctx.beginPath();
       ctx.lineWidth = "1";
@@ -47,7 +48,8 @@ class DrawableObjekt {
     if (
       this instanceof Character ||
       this instanceof Chicken ||
-      this instanceof Endbosslevel1
+      this instanceof Endbosslevel1 ||
+      this instanceof ChickenSmall
     ) {
       ctx.beginPath();
       ctx.lineWidth = "1";

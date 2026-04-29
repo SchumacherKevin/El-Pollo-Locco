@@ -19,7 +19,7 @@ for (let i = -totalSections / 2; i < totalSections / 2; i++) {
 }
 
 const level1 = new Level(
-  [new Chicken(), new Chicken(), new Chicken(), new Endbosslevel1()],
+  [new Chicken(), new Chicken(), new Chicken(), new ChickenSmall(), new Endbosslevel1()],
   [new Cloud()],
   backgrounds,
   [new Coin(300, 350), new Coin(600, 350), new SalsaBottle(400, 350), new SalsaBottle(800, 350)]

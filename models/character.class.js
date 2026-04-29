@@ -13,6 +13,18 @@ class Character extends MoveableObjekt {
     "img/2_character_pepe/1_idle/idle/I-9.png",
     "img/2_character_pepe/1_idle/idle/I-10.png",
   ];
+  Images_LongIdle = [
+    "img/2_character_pepe/1_idle/long_idle/L-11.png",
+    "img/2_character_pepe/1_idle/long_idle/L-12.png",
+    "img/2_character_pepe/1_idle/long_idle/L-13.png",
+    "img/2_character_pepe/1_idle/long_idle/L-14.png",
+    "img/2_character_pepe/1_idle/long_idle/L-15.png",
+    "img/2_character_pepe/1_idle/long_idle/L-16.png",
+    "img/2_character_pepe/1_idle/long_idle/L-17.png",
+    "img/2_character_pepe/1_idle/long_idle/L-18.png",
+    "img/2_character_pepe/1_idle/long_idle/L-19.png",
+    "img/2_character_pepe/1_idle/long_idle/L-20.png",
+  ];
   Images_Walk = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
