@@ -6,6 +6,7 @@ class DrawableObjekt {
   img;
   imageCache = {};
   currentImage = 0;
+  deadTime = 0;
 
   loadImage(path) {
     this.img = new Image();
@@ -21,7 +22,9 @@ class DrawableObjekt {
   }
 
   draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    if (this.img) {
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
   }
 
   drawFrameOffset(ctx) {
@@ -99,7 +102,9 @@ class DrawableObjekt {
   playAnimation(imagesArray) {
     let index = this.currentImage % imagesArray.length;
     let path = imagesArray[index];
-    this.img = this.imageCache[path];
+    if (this.imageCache[path]) {
+      this.img = this.imageCache[path];
+    }
     this.currentImage++;
   }
 
@@ -119,8 +124,9 @@ class DrawableObjekt {
 
   hit() {
     this.hitpoints -= 20;
-    if (this.hitpoints < 0) {
+    if (this.hitpoints <= 0) {
       this.hitpoints = 0;
+      this.deadTime = new Date().getTime();
     } else {
       this.lastHit = new Date().getTime();
     }
@@ -133,6 +139,7 @@ class DrawableObjekt {
   isDead() {
     return this.hitpoints == 0;
   }
+
 
   applyGravity() {
     setInterval(() => {

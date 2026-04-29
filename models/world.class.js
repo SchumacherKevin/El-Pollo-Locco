@@ -8,6 +8,7 @@ class World {
   statusHitPoints = new StatusHitPoints();
   statusCoins = new StatusCoins();
   statusSalsaBottle = new StatusSalsaBottle();
+  statusEndboss = new StatusbarEndboss();
   throwableObjekt = [];
 
   constructor(canvas, keyboard) {
@@ -27,13 +28,38 @@ class World {
 
   checkCollisions() {
     setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.iscolliding(enemy)) {
-          if (!this.character.isHurt()) {
+      this.level.enemies.forEach((enemy, index) => {
+        if (!enemy.isDead() && this.character.iscolliding(enemy)) {
+          if (this.character.isAboveGround() && this.character.speedY < 0 && this.character.y < enemy.y) {
+            enemy.hit();
+            if (enemy instanceof Endbosslevel1) {
+              this.statusEndboss.setPercentage((enemy.hitpoints / 200) * 100);
+            }
+            this.character.speedY = 15;
+          } else if (!this.character.isHurt()) {
             this.character.hit();
             this.statusHitPoints.setPercentage(this.character.hitpoints);
           }
         }
+        if (enemy instanceof Endbosslevel1) {
+          if (enemy.isDead() && new Date().getTime() - enemy.deadTime > 600) {
+            this.level.enemies.splice(index, 1);
+          }
+        } else if (enemy.isDead() && new Date().getTime() - enemy.deadTime > 1000) {
+          this.level.enemies.splice(index, 1);
+        }
+      });
+
+      this.throwableObjekt.forEach((bottle, bottleIndex) => {
+        this.level.enemies.forEach((enemy, enemyIndex) => {
+          if (!enemy.isDead() && bottle.iscolliding(enemy)) {
+            enemy.hit();
+            if (enemy instanceof Endbosslevel1) {
+              this.statusEndboss.setPercentage((enemy.hitpoints / 200) * 100);
+            }
+            this.throwableObjekt.splice(bottleIndex, 1);
+          }
+        });
       });
     }, 1000 / 25);
   }
@@ -73,6 +99,7 @@ class World {
     this.addToMap(this.statusHitPoints);
     this.addToMap(this.statusCoins);
     this.addToMap(this.statusSalsaBottle);
+    this.addToMap(this.statusEndboss);
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjektToMap(this.level.clouds);

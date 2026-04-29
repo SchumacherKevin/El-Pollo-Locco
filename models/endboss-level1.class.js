@@ -46,10 +46,17 @@ class Endbosslevel1 extends MoveableObjekt {
     left: 50,
   };
 
+  deathFrame = 0;
+
   constructor() {
     super();
     this.loadImage("img/4_enemie_boss_chicken/1_walk/G1.png");
     this.loadImages(this.Images_Walk);
+    this.loadImages(this.Images_Alert);
+    this.loadImages(this.Images_Attack);
+    this.loadImages(this.Images_Hurt);
+    this.loadImages(this.Images_Dead);
+    this.hitpoints = 200;
     this.x = 2000;
     this.speed = 5;
     this.animate();
@@ -57,8 +64,17 @@ class Endbosslevel1 extends MoveableObjekt {
 
   animate() {
     setInterval(() => {
-      this.moveLeft();
-      this.playAnimation(this.Images_Walk);
-    }, 1000 / 10);
+      if (this.isHurt()) {
+        this.playAnimation(this.Images_Hurt);
+      } else if (this.isDead()) {
+        if (this.deathFrame < this.Images_Dead.length) {
+          this.img = this.imageCache[this.Images_Dead[this.deathFrame]];
+          this.deathFrame++;
+        }
+      } else {
+        this.moveLeft();
+        this.playAnimation(this.Images_Walk);
+      }
+    }, 1000 / 5);
   }
 }
