@@ -78,6 +78,26 @@ canvas {
   background-color: rgba(0, 0, 0, 0.9);
 }
 
+#tryAgainButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 30px;
+  font-size: 24px;
+  font-family: "Zabars", sans-serif;
+  background-color: rgba(194, 19, 19, 0.8);
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  display: none;
+}
+
+#tryAgainButton:hover {
+  background-color: rgba(194, 19, 19, 1);
+}
+
 @media only screen and (max-width: 720px) {
   canvas {
     width: 100%;

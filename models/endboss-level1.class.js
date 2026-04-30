@@ -81,6 +81,7 @@ class Endbosslevel1 extends MoveableObjekt {
       if (this.world?.statusEndboss) {
         this.world.statusEndboss.visible = true;
       }
+      audioHub.playAudio(AudioHub.EndbossApproach);
     }
   }
 

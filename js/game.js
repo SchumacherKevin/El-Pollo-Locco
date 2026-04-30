@@ -15,6 +15,9 @@ function showStartScreen() {
       document.getElementById("muteButton").style.display = "block";
       document.querySelector("h1").style.display = "block";
     };
+    document.getElementById("muteButton").textContent = AudioHub.isMuted
+      ? "Unmute"
+      : "Mute";
     document.getElementById("startButton").addEventListener("click", startGame);
     document
       .getElementById("muteButton")
@@ -25,21 +28,15 @@ function showStartScreen() {
 }
 
 function startGame() {
-  audioHub.stopOneAudio(AudioHub.Intro);
   document.getElementById("startButton").style.display = "none";
-  // document.querySelector('span').style.display = 'block';
-  if (AudioHub.autoplayBlocked || AudioHub.StartGame.paused) {
-    audioHub.playAudio(AudioHub.StartGame);
-  }
+  audioHub.playAudio(AudioHub.StartGame);
+  audioHub.stopOneAudio(AudioHub.Intro);
   init();
 }
 
 function toggleMuteButton() {
   const muted = AudioHub.toggleMute();
   document.getElementById("muteButton").textContent = muted ? "Unmute" : "Mute";
-  if (!muted && AudioHub.autoplayBlocked) {
-    audioHub.playAudio(AudioHub.Intro);
-  }
 }
 
 function init() {
@@ -49,45 +46,21 @@ function init() {
 }
 
 window.addEventListener("keydown", (event) => {
-  if (event.key == "ArrowLeft") {
-    keyboard.LEFT = true;
-  }
-  if (event.key == "ArrowRight") {
-    keyboard.RIGHT = true;
-  }
-  if (event.key == "ArrowUp") {
-    keyboard.UP = true;
-  }
-  if (event.key == "ArrowDown") {
-    keyboard.DOWN = true;
-  }
-  if (event.key == " ") {
-    keyboard.SPACE = true;
-  }
-  if (event.key == "d") {
-    keyboard.d = true;
-  }
+  if (event.key == "ArrowLeft") keyboard.LEFT = true;
+  if (event.key == "ArrowRight") keyboard.RIGHT = true;
+  if (event.key == "ArrowUp") keyboard.UP = true;
+  if (event.key == "ArrowDown") keyboard.DOWN = true;
+  if (event.key == " ") keyboard.SPACE = true;
+  if (event.key == "d") keyboard.d = true;
 });
 
 window.addEventListener("keyup", (event) => {
-  if (event.key == "ArrowLeft") {
-    keyboard.LEFT = false;
-  }
-  if (event.key == "ArrowRight") {
-    keyboard.RIGHT = false;
-  }
-  if (event.key == "ArrowUp") {
-    keyboard.UP = false;
-  }
-  if (event.key == "ArrowDown") {
-    keyboard.DOWN = false;
-  }
-  if (event.key == " ") {
-    keyboard.SPACE = false;
-  }
-  if (event.key == "d") {
-    keyboard.d = false;
-  }
+  if (event.key == "ArrowLeft") keyboard.LEFT = false;
+  if (event.key == "ArrowRight") keyboard.RIGHT = false;
+  if (event.key == "ArrowUp") keyboard.UP = false;
+  if (event.key == "ArrowDown") keyboard.DOWN = false;
+  if (event.key == " ") keyboard.SPACE = false;
+  if (event.key == "d") keyboard.d = false;
 });
 
 window.addEventListener("load", () => {

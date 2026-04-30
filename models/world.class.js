@@ -10,6 +10,7 @@ class World {
   statusSalsaBottle = new StatusSalsaBottle();
   statusEndboss = new StatusbarEndboss();
   throwableObjekt = [];
+  gameOver = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -21,6 +22,7 @@ class World {
     this.checkCollisions();
     this.checkCollectables();
     this.checkThrow();
+    this.checkGameOver();
   }
 
   setWorld() {
@@ -34,8 +36,19 @@ class World {
     setInterval(() => {
       this.level.enemies.forEach((enemy, index) => {
         if (!enemy.isDead() && this.character.iscolliding(enemy)) {
-          if (this.character.isAboveGround() && this.character.speedY < 0 && this.character.y < enemy.y) {
+          if (
+            this.character.isAboveGround() &&
+            this.character.speedY < 0 &&
+            this.character.y < enemy.y
+          ) {
             enemy.hit();
+            if (enemy.isDead()) {
+              if (enemy instanceof ChickenSmall) {
+                audioHub.playAudio(AudioHub.ChickenDead2);
+              } else if (enemy instanceof Chicken) {
+                audioHub.playAudio(AudioHub.ChickenDead);
+              }
+            }
             if (enemy instanceof Endbosslevel1) {
               this.statusEndboss.setPercentage((enemy.hitpoints / 200) * 100);
             }
@@ -49,7 +62,10 @@ class World {
           if (enemy.isDead() && new Date().getTime() - enemy.deadTime > 600) {
             this.level.enemies.splice(index, 1);
           }
-        } else if (enemy.isDead() && new Date().getTime() - enemy.deadTime > 1000) {
+        } else if (
+          enemy.isDead() &&
+          new Date().getTime() - enemy.deadTime > 1000
+        ) {
           this.level.enemies.splice(index, 1);
         }
       });
@@ -58,9 +74,17 @@ class World {
         this.level.enemies.forEach((enemy, enemyIndex) => {
           if (!enemy.isDead() && bottle.iscolliding(enemy)) {
             enemy.hit();
+            if (enemy.isDead()) {
+              if (enemy instanceof ChickenSmall) {
+                audioHub.playAudio(AudioHub.ChickenDead2);
+              } else if (enemy instanceof Chicken) {
+                audioHub.playAudio(AudioHub.ChickenDead);
+              }
+            }
             if (enemy instanceof Endbosslevel1) {
               this.statusEndboss.setPercentage((enemy.hitpoints / 200) * 100);
             }
+            audioHub.playAudio(AudioHub.BottleBreak);
             this.throwableObjekt.splice(bottleIndex, 1);
           }
         });
@@ -71,7 +95,9 @@ class World {
   checkThrow() {
     setInterval(() => {
       if (this.keyboard.d) {
-        this.throwableObjekt.push(new ThrowableObjekt(this.character.x + 50, this.character.y + 100));
+        this.throwableObjekt.push(
+          new ThrowableObjekt(this.character.x + 50, this.character.y + 100),
+        );
         this.keyboard.d = false;
       }
     }, 1000 / 25);
@@ -82,10 +108,14 @@ class World {
       this.level.collectables.forEach((collectable, index) => {
         if (this.character.iscolliding(collectable)) {
           if (collectable instanceof Coin) {
+            audioHub.playAudio(AudioHub.CoinCollect);
             this.statusCoins.setPercentage(this.statusCoins.percentage + 20);
             this.level.collectables.splice(index, 1);
           } else if (collectable instanceof SalsaBottle) {
-            this.statusSalsaBottle.setPercentage(this.statusSalsaBottle.percentage + 20);
+            audioHub.playAudio(AudioHub.BottleCollect);
+            this.statusSalsaBottle.setPercentage(
+              this.statusSalsaBottle.percentage + 20,
+            );
             this.level.collectables.splice(index, 1);
           }
         }
@@ -93,7 +123,40 @@ class World {
     }, 1000 / 25);
   }
 
+  checkGameOver() {
+    setInterval(() => {
+      const endboss = this.level.enemies.find(
+        (e) => e instanceof Endbosslevel1,
+      );
+      if (this.character.isDead()) {
+        this.gameOver = true;
+        this.showScreen(endScreen);
+      } else if (endboss && endboss.isDead()) {
+        this.gameOver = true;
+        this.showScreen(winScreen);
+      }
+    }, 1000 / 5);
+  }
+
+  showScreen(imagePath) {
+    const img = new Image();
+    img.src = imagePath;
+    img.onload = () => {
+      this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+    };
+    this.showTryAgainButton();
+  }
+
+  showTryAgainButton() {
+    const btn = document.getElementById("tryAgainButton");
+    btn.style.display = "block";
+    btn.onclick = () => {
+      location.reload();
+    };
+  }
+
   draw() {
+    if (this.gameOver) return;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
@@ -129,11 +192,9 @@ class World {
     if (movObj.otherDirection) {
       this.flipImage(movObj);
     }
-
     movObj.draw(this.ctx);
     movObj.drawFrame(this.ctx);
     movObj.drawFrameOffset(this.ctx);
-
     if (movObj.otherDirection) {
       this.flipImageBack(movObj);
     }
