@@ -1,5 +1,6 @@
 class StatusBar extends DrawableObjekt {
   percentage = 100;
+  visible = true;
 
   constructor() {
     super();

@@ -16,5 +16,12 @@ class Coin extends Collectables {
     this.height = 100;
     this.loadImage("img/8_coin/coin_1.png");
     this.loadImages(this.Images_Coin);
+    this.animate();
+  }
+
+  animate() {
+    setInterval(() => {
+      this.playAnimation(this.Images_Coin);
+    }, 1000 / 5);
   }
 }

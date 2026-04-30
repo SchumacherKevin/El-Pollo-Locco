@@ -46,6 +46,11 @@ class Endbosslevel1 extends MoveableObjekt {
     left: 50,
   };
 
+  alertDistance = 600;
+  hasAlerted = false;
+  isChasing = false;
+  alertFrame = 0;
+  statusBarActivated = false;
   deathFrame = 0;
 
   constructor() {
@@ -62,14 +67,45 @@ class Endbosslevel1 extends MoveableObjekt {
     this.animate();
   }
 
+  isInAlertRange() {
+    return (
+      this.world &&
+      this.world.character &&
+      Math.abs(this.x - this.world.character.x) < this.alertDistance
+    );
+  }
+
+  activateStatusBar() {
+    if (!this.statusBarActivated) {
+      this.statusBarActivated = true;
+      if (this.world?.statusEndboss) {
+        this.world.statusEndboss.visible = true;
+      }
+    }
+  }
+
   animate() {
     setInterval(() => {
-      if (this.isHurt()) {
-        this.playAnimation(this.Images_Hurt);
-      } else if (this.isDead()) {
+      if (this.isDead()) {
         if (this.deathFrame < this.Images_Dead.length) {
           this.img = this.imageCache[this.Images_Dead[this.deathFrame]];
           this.deathFrame++;
+        }
+      } else if (this.isHurt()) {
+        this.playAnimation(this.Images_Hurt);
+      } else if (!this.isChasing) {
+        if (this.isInAlertRange()) {
+          this.activateStatusBar();
+          this.playAnimation(this.Images_Alert);
+          this.alertFrame++;
+          if (this.alertFrame >= this.Images_Alert.length) {
+            this.hasAlerted = true;
+            this.isChasing = true;
+            this.currentImage = 0;
+          }
+        } else {
+          this.img = this.imageCache[this.Images_Walk[0]];
+          this.alertFrame = 0;
         }
       } else {
         this.moveLeft();

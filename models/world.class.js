@@ -15,6 +15,7 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.statusEndboss.visible = false;
     this.draw();
     this.setWorld();
     this.checkCollisions();
@@ -24,6 +25,9 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    this.level.enemies.forEach((enemy) => {
+      enemy.world = this;
+    });
   }
 
   checkCollisions() {
@@ -99,7 +103,9 @@ class World {
     this.addToMap(this.statusHitPoints);
     this.addToMap(this.statusCoins);
     this.addToMap(this.statusSalsaBottle);
-    this.addToMap(this.statusEndboss);
+    if (this.statusEndboss.visible) {
+      this.addToMap(this.statusEndboss);
+    }
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjektToMap(this.level.clouds);

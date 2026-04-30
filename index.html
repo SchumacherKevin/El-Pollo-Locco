@@ -31,12 +31,12 @@
     <script src="models/coin.class.js"></script>
     <script src="models/salsa-bottle.class.js"></script>
     <script src="levels/level1.js"></script>
-    <script src="js/game.js"></script>
+    <script src="models/audio-hub.class.js"></script>
   </head>
 
-  <body onload="init()">
+  <body>
     <h1>El Pollo Locco</h1>
-    <span>
+    <!-- <span>
       In the dusty streets of Pico Pueblo, Pepé Peligroso was once the fastest
       mustache in the West - charming, brave, and always ready with a cheeky
       grin for every adventure. But now danger looms on the horizon: the evil
@@ -45,9 +45,14 @@
       extra dose of Picante, Pepé faces the craziest threat of his life. Dodge
       flying feathers, defeat the crazy chicken bosses, and save Pico Pueblo
       before the Wild West turns into a chicken coop! ¡Arriba! The adventure
-      begins now!</span
-    >
+      begins now!</span> -->
 
-    <canvas id="gameCanvas" width="720" height="480"> </canvas>
+    <div id="gameContainer">
+      <canvas id="gameCanvas" width="720" height="480"> </canvas>
+      <button id="startButton">Start Game</button>
+      <button id="muteButton">Mute</button>
+    </div>
+    <script src="js/game.js"></script>
+  </body>
   </body>
 </html>
