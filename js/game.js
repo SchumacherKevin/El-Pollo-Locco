@@ -6,34 +6,37 @@ let audioHub = new AudioHub();
 function showStartScreen() {
   canvas = document.getElementById("gameCanvas");
   if (canvas) {
-    let ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext("2d");
     let startImage = new Image();
-    startImage.src = 'img/9_intro_outro_screens/start/startscreen_1.png';
-    startImage.onload = function() {
+    startImage.src = "img/9_intro_outro_screens/start/startscreen_1.png";
+    startImage.onload = function () {
       ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
-      document.getElementById('startButton').style.display = 'block';
-      document.getElementById('muteButton').style.display = 'block';
+      document.getElementById("startButton").style.display = "block";
+      document.getElementById("muteButton").style.display = "block";
+      document.querySelector("h1").style.display = "block";
     };
-    document.getElementById('startButton').addEventListener('click', startGame);
-    document.getElementById('muteButton').addEventListener('click', toggleMuteButton);
+    document.getElementById("startButton").addEventListener("click", startGame);
+    document
+      .getElementById("muteButton")
+      .addEventListener("click", toggleMuteButton);
   } else {
-    console.error('Canvas not found');
+    console.error("Canvas not found");
   }
 }
 
 function startGame() {
-  document.getElementById('startButton').style.display = 'none';
-  document.querySelector('h1').style.display = 'block';
+  audioHub.stopOneAudio(AudioHub.Intro);
+  document.getElementById("startButton").style.display = "none";
   // document.querySelector('span').style.display = 'block';
-  if (AudioHub.autoplayBlocked || AudioHub.Intro.paused) {
-    audioHub.playAudio(AudioHub.Intro);
+  if (AudioHub.autoplayBlocked || AudioHub.StartGame.paused) {
+    audioHub.playAudio(AudioHub.StartGame);
   }
   init();
 }
 
 function toggleMuteButton() {
   const muted = AudioHub.toggleMute();
-  document.getElementById('muteButton').textContent = muted ? 'Unmute' : 'Mute';
+  document.getElementById("muteButton").textContent = muted ? "Unmute" : "Mute";
   if (!muted && AudioHub.autoplayBlocked) {
     audioHub.playAudio(AudioHub.Intro);
   }
@@ -87,7 +90,7 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
   showStartScreen();
   audioHub.playAudio(AudioHub.Intro);
 });

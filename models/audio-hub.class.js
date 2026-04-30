@@ -1,6 +1,7 @@
 class AudioHub {
-  static Intro = new Audio("audio/Pepe Intro 1.mp3");
-  static allSounds = [AudioHub.Intro];
+  static Intro = new Audio("audio/Pepé Peligroso.mp3");
+  static StartGame = new Audio("audio/Pepe Intro 1.mp3");
+  static allSounds = [AudioHub.Intro, AudioHub.StartGame];
   static isMuted = false;
   static autoplayBlocked = false;
   static originalVolume = 0.2;
@@ -28,6 +29,11 @@ class AudioHub {
         return null;
       });
     }
+  }
+
+  stopOneAudio(sound) {
+    sound.pause();
+    sound.currentTime = 0;
   }
 
   static toggleMute() {
