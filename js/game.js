@@ -13,6 +13,7 @@ function showStartScreen() {
       ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
       document.getElementById("startButton").style.display = "block";
       document.getElementById("muteButton").style.display = "block";
+      document.getElementById("fullscreenButton").style.display = "block";
       document.querySelector("h1").style.display = "block";
     };
     document.getElementById("muteButton").textContent = AudioHub.isMuted
@@ -22,6 +23,9 @@ function showStartScreen() {
     document
       .getElementById("muteButton")
       .addEventListener("click", toggleMuteButton);
+    document                                                 
+      .getElementById("fullscreenButton")              
+      .addEventListener("click", () => toggleFullscreen(document.getElementById("gameContainer")));
   } else {
     console.error("Canvas not found");
   }
@@ -34,6 +38,14 @@ function startGame() {
   init();
 }
 
+function fullscreenButton() {
+  const btn = document.getElementById("fullscreenButton");
+  btn.style.display = "block";
+  btn.addEventListener("click", () => {
+    fullscreen(document.getElementById("gameContainer"));
+  });
+}
+
 function toggleMuteButton() {
   const muted = AudioHub.toggleMute();
   document.getElementById("muteButton").textContent = muted ? "Unmute" : "Mute";
@@ -43,6 +55,37 @@ function init() {
   canvas = document.getElementById("gameCanvas");
   initLevel1();
   world = new World(canvas, keyboard);
+}
+
+function toggleFullscreen() {
+  if (
+    !document.fullscreenElement &&
+    document.documentElement.requestFullscreen
+  ) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+function fullscreen(element = document.documentElement) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  }
+}
+
+function exitFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
 }
 
 window.addEventListener("keydown", (event) => {

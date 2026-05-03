@@ -72,7 +72,7 @@ class AudioHub {
     return AudioHub.isMuted;
   }
 
-  static stopAll() {
+  static stopAllSounds() {
     AudioHub.allSounds.forEach((sound) => {
       sound.pause();
       sound.currentTime = 0;

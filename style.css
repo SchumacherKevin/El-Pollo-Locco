@@ -3,6 +3,12 @@
   src: url("fonts/ZABARS/zabars.ttf") format("truetype");
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   color: rgba(194, 19, 19, 0.692);
   display: flex;
@@ -14,6 +20,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   font-family: "Zabars", sans-serif;
+  height: 100vh;
   flex: 1;
 }
 
@@ -39,6 +46,11 @@ canvas {
   display: inline-block;
 }
 
+#gameContainer:fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+
 #startButton {
   position: absolute;
   top: 50%;
@@ -57,6 +69,19 @@ canvas {
 
 #startButton:hover {
   background-color: rgba(194, 19, 19, 1);
+}
+
+#fullscreenButton {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  background-image: url("img/fullscreen.png");
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+  display: none;
 }
 
 #muteButton {

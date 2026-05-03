@@ -168,7 +168,7 @@ class Character extends MoveableObjekt {
           this.playAnimation(this.Images_Walk);
         } else if (this.idleTime >= 5000) {
           this.playAnimation(this.Images_LongIdle);
-          if (now - this.lastSnoringSound > 3000) {
+          if (now - this.lastSnoringSound > 3000 && !this.world.gameOver) {
             audioHub.playAudio(AudioHub.CharacterSnoring);
             this.lastSnoringSound = now;
           }

@@ -130,9 +130,13 @@ class World {
       );
       if (this.character.isDead()) {
         this.gameOver = true;
+        AudioHub.stopAllSounds();
+        // audioHub.playAudio(AudioHub.YouLost);
         this.showScreen(endScreen);
       } else if (endboss && endboss.isDead()) {
         this.gameOver = true;
+        AudioHub.stopAllSounds();
+        // audioHub.playAudio(AudioHub.YouWon);
         this.showScreen(winScreen);
       }
     }, 1000 / 5);
