@@ -5,50 +5,69 @@ let audioHub = new AudioHub();
 
 function showStartScreen() {
   canvas = document.getElementById("gameCanvas");
-  if (canvas) {
-    let ctx = canvas.getContext("2d");
-    let startImage = new Image();
-    startImage.src = "img/9_intro_outro_screens/start/startscreen_1.png";
-    startImage.onload = function () {
-      ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
-      document.getElementById("startButton").style.display = "block";
-      document.getElementById("muteButton").style.display = "block";
-      document.getElementById("fullscreenButton").style.display = "block";
-      document.querySelector("h1").style.display = "block";
-    };
-    document.getElementById("muteButton").textContent = AudioHub.isMuted
-      ? "Unmute"
-      : "Mute";
-    document.getElementById("startButton").addEventListener("click", startGame);
-    document
-      .getElementById("muteButton")
-      .addEventListener("click", toggleMuteButton);
-    document                                                 
-      .getElementById("fullscreenButton")              
-      .addEventListener("click", () => toggleFullscreen(document.getElementById("gameContainer")));
-  } else {
+  if (!canvas) {
     console.error("Canvas not found");
+    return;
   }
+
+  const ctx = canvas.getContext("2d");
+  const startImage = new Image();
+  startImage.src = "img/9_intro_outro_screens/start/startscreen_1.png";
+  startImage.onload = function () {
+    ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
+    document.getElementById("startButton").style.display = "block";
+    document.getElementById("settingsButton").style.display = "block";
+    document.getElementById("fullscreenButton").style.display = "block";
+  };
+
+  updateMuteLabel();
+
+  document.getElementById("startButton").addEventListener("click", startGame);
+  document
+    .getElementById("muteButton")
+    .addEventListener("click", toggleMuteButton);
+  document
+    .getElementById("fullscreenButton")
+    .addEventListener("click", () =>
+      toggleFullscreen(document.getElementById("gameContainer")),
+    );
+  document
+    .getElementById("settingsButton")
+    .addEventListener("click", openSettings);
+  document
+    .getElementById("closeSettings")
+    .addEventListener("click", closeSettings);
+  document.getElementById("settingsOverlay").addEventListener("click", (e) => {
+    if (e.target === document.getElementById("settingsOverlay"))
+      closeSettings();
+  });
+}
+
+function openSettings() {
+  document.getElementById("settingsOverlay").classList.add("active");
+}
+
+function closeSettings() {
+  document.getElementById("settingsOverlay").classList.remove("active");
 }
 
 function startGame() {
   document.getElementById("startButton").style.display = "none";
+  document.getElementById("settingsButton").style.display = "none";
   audioHub.playAudio(AudioHub.StartGame);
   audioHub.stopOneAudio(AudioHub.Intro);
   init();
 }
 
-function fullscreenButton() {
-  const btn = document.getElementById("fullscreenButton");
-  btn.style.display = "block";
-  btn.addEventListener("click", () => {
-    fullscreen(document.getElementById("gameContainer"));
-  });
+function toggleMuteButton() {
+  AudioHub.toggleMute();
+  updateMuteLabel();
 }
 
-function toggleMuteButton() {
-  const muted = AudioHub.toggleMute();
-  document.getElementById("muteButton").textContent = muted ? "Unmute" : "Mute";
+function updateMuteLabel() {
+  document.getElementById("muteButton").textContent = AudioHub.isMuted
+    ? "🔇 Unmute"
+    : "🔊 Mute";
 }
 
 function init() {
@@ -65,26 +84,6 @@ function toggleFullscreen() {
     document.documentElement.requestFullscreen();
   } else {
     document.exitFullscreen();
-  }
-}
-
-function fullscreen(element = document.documentElement) {
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  }
-}
-
-function exitFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
   }
 }
 

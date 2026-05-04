@@ -3,14 +3,34 @@
   src: url("fonts/ZABARS/zabars.ttf") format("truetype");
 }
 
-* {
+:root {
+  --red: #c21313;
+  --red-dark: #8b0000;
+  --red-glow: rgba(194, 19, 19, 0.35);
+  --gold: #d4a017;
+  --gold-light: #f0c040;
+  --brown: #3b1f0a;
+  --cream: #f5e6c8;
+  --black-75: rgba(0, 0, 0, 0.75);
+  --black-90: rgba(0, 0, 0, 0.90);
+  --btn-font: "Zabars", sans-serif;
+  --btn-radius: 4px;
+  --btn-border: 2px solid var(--gold);
+  --btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --btn-transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  color: rgba(194, 19, 19, 0.692);
+  font-family: var(--btn-font);
+  color: var(--cream);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,36 +39,60 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  font-family: "Zabars", sans-serif;
   height: 100vh;
-  flex: 1;
+  overflow: hidden;
 }
 
 h1 {
-  margin-top: 20px;
   font-size: 48px;
+  color: var(--gold-light);
+  text-shadow: 0 2px 8px var(--red-glow), 2px 2px 0 var(--red-dark);
+  letter-spacing: 2px;
+  margin-bottom: 10px;
   display: none;
-}
-
-span {
-  font-size: 32px;
-  margin-top: 10px;
-  display: none;
-}
-
-canvas {
-  background-color: black;
-  display: block;
 }
 
 #gameContainer {
   position: relative;
   display: inline-block;
+  outline: 3px solid var(--gold);
+  box-shadow: 0 0 32px rgba(212, 160, 23, 0.3), 0 0 80px rgba(0, 0, 0, 0.8);
 }
 
-#gameContainer:fullscreen {
+#gameContainer:fullscreen,
+#gameContainer:-webkit-full-screen {
   width: 100vw;
   height: 100vh;
+  outline: none;
+  box-shadow: none;
+}
+
+canvas {
+  background-color: #000;
+  display: block;
+}
+
+.game-btn {
+  font-family: var(--btn-font);
+  font-size: 22px;
+  color: var(--cream);
+  border: var(--btn-border);
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  box-shadow: var(--btn-shadow);
+  transition: var(--btn-transition);
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.game-btn:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), 0 0 12px var(--red-glow);
+  transform: translateY(-2px);
+}
+
+.game-btn:active {
+  transform: translateY(0px);
+  box-shadow: var(--btn-shadow);
 }
 
 #startButton {
@@ -56,71 +100,183 @@ canvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 15px 30px;
-  font-size: 24px;
-  font-family: "Zabars", sans-serif;
-  background-color: rgba(194, 19, 19, 0.8);
-  color: white;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
+  padding: 14px 36px;
+  background-color: var(--red);
   display: none;
+  z-index: 10;
 }
 
 #startButton:hover {
-  background-color: rgba(194, 19, 19, 1);
+  background-color: var(--red-dark);
+  transform: translate(-50%, -52%);
+}
+
+#startButton:active {
+  transform: translate(-50%, -50%);
+}
+
+#settingsButton {
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 14px 36px;
+  background-color: var(--red);
+  display: none;
+  z-index: 10;
+}
+
+#settingsButton:hover {
+  background-color: var(--red-dark);
+  transform: translate(-50%, -52%);
+}
+
+#settingsButton:active {
+  transform: translate(-50%, -50%);
+}
+
+#tryAgainButton {
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 14px 36px;
+  background-color: var(--red);
+  display: none;
+  z-index: 10;
+}
+
+#tryAgainButton:hover {
+  background-color: var(--red-dark);
+  transform: translate(-50%, -52%);
+}
+
+#tryAgainButton:active {
+  transform: translate(-50%, -50%);
+}
+
+#muteButton {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: var(--black-75);
+  border: 1px solid var(--gold);
+  border-radius: var(--btn-radius);
+  z-index: 1000;
+  display: block;
+}
+
+#muteButton:hover {
+  background-color: var(--black-90);
 }
 
 #fullscreenButton {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   background-image: url("img/fullscreen.png");
   background-size: cover;
-  border: none;
+  background-color: transparent;
+  border: 1px solid var(--gold);
+  border-radius: var(--btn-radius);
   cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
   display: none;
+  z-index: 10;
 }
 
-#muteButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 10px 18px;
+#fullscreenButton:hover {
+  opacity: 1;
+}
+
+#settingsOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+#settingsOverlay.active {
+  display: flex;
+}
+
+#settingsModal {
+  background: linear-gradient(160deg, #2a1205, #1a0a02);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 36px 44px;
+  box-shadow: 0 0 40px rgba(212, 160, 23, 0.25), 0 8px 40px rgba(0, 0, 0, 0.9);
+  min-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+#settingsModal h2 {
+  font-family: var(--btn-font);
+  font-size: 32px;
+  color: var(--gold-light);
+  text-shadow: 0 2px 8px var(--red-glow), 2px 2px 0 var(--red-dark);
+  letter-spacing: 2px;
+}
+
+.controls-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+  padding-bottom: 10px;
+}
+
+.control-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.key {
+  font-family: var(--btn-font);
+  font-size: 15px;
+  color: var(--gold-light);
+  background: rgba(212, 160, 23, 0.12);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 4px 10px;
+  min-width: 130px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.desc {
+  font-family: var(--btn-font);
+  font-size: 17px;
+  color: var(--cream);
+  letter-spacing: 0.5px;
+}
+
+#closeSettings {
+  padding: 10px 32px;
   font-size: 18px;
-  font-family: "Zabars", sans-serif;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
-  display: none;
+  background-color: var(--red);
 }
 
-#muteButton:hover {
-  background-color: rgba(0, 0, 0, 0.9);
-}
-
-#tryAgainButton {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 15px 30px;
-  font-size: 24px;
-  font-family: "Zabars", sans-serif;
-  background-color: rgba(194, 19, 19, 0.8);
-  color: white;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
-  display: none;
-}
-
-#tryAgainButton:hover {
-  background-color: rgba(194, 19, 19, 1);
+#closeSettings:hover {
+  background-color: var(--red-dark);
 }
 
 @media only screen and (max-width: 720px) {

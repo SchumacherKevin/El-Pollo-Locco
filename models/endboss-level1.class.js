@@ -62,7 +62,7 @@ class Endbosslevel1 extends MoveableObjekt {
     this.loadImages(this.Images_Hurt);
     this.loadImages(this.Images_Dead);
     this.hitpoints = 200;
-    this.x = 2000;
+    this.x = 4500;
     this.speed = 5;
     this.animate();
   }

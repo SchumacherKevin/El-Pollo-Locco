@@ -11,6 +11,8 @@ class World {
   statusEndboss = new StatusbarEndboss();
   throwableObjekt = [];
   gameOver = false;
+  coinCount = 0;
+  bottleCount = 0;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -71,7 +73,7 @@ class World {
       });
 
       this.throwableObjekt.forEach((bottle, bottleIndex) => {
-        this.level.enemies.forEach((enemy, enemyIndex) => {
+        this.level.enemies.forEach((enemy) => {
           if (!enemy.isDead() && bottle.iscolliding(enemy)) {
             enemy.hit();
             if (enemy.isDead()) {
@@ -93,11 +95,20 @@ class World {
   }
 
   checkThrow() {
+    this.lastThrowTime = 0;
     setInterval(() => {
       if (this.keyboard.d) {
-        this.throwableObjekt.push(
-          new ThrowableObjekt(this.character.x + 50, this.character.y + 100),
-        );
+        const now = Date.now();
+        const cooldownReady = now - this.lastThrowTime >= 500;
+
+        if (this.bottleCount > 0 && cooldownReady) {
+          this.throwableObjekt.push(
+            new ThrowableObjekt(this.character.x + 50, this.character.y + 100),
+          );
+          this.bottleCount--;
+          this.statusSalsaBottle.setPercentage((this.bottleCount / 15) * 100);
+          this.lastThrowTime = now;
+        }
         this.keyboard.d = false;
       }
     }, 1000 / 25);
@@ -109,13 +120,15 @@ class World {
         if (this.character.iscolliding(collectable)) {
           if (collectable instanceof Coin) {
             audioHub.playAudio(AudioHub.CoinCollect);
-            this.statusCoins.setPercentage(this.statusCoins.percentage + 20);
+            this.coinCount++;
+            this.statusCoins.setPercentage(
+              Math.min(100, this.statusCoins.percentage + 20),
+            );
             this.level.collectables.splice(index, 1);
           } else if (collectable instanceof SalsaBottle) {
             audioHub.playAudio(AudioHub.BottleCollect);
-            this.statusSalsaBottle.setPercentage(
-              this.statusSalsaBottle.percentage + 20,
-            );
+            this.bottleCount = Math.min(15, this.bottleCount + 1);
+            this.statusSalsaBottle.setPercentage((this.bottleCount / 15) * 100);
             this.level.collectables.splice(index, 1);
           }
         }
@@ -131,12 +144,10 @@ class World {
       if (this.character.isDead()) {
         this.gameOver = true;
         AudioHub.stopAllSounds();
-        // audioHub.playAudio(AudioHub.YouLost);
         this.showScreen(endScreen);
       } else if (endboss && endboss.isDead()) {
         this.gameOver = true;
         AudioHub.stopAllSounds();
-        // audioHub.playAudio(AudioHub.YouWon);
         this.showScreen(winScreen);
       }
     }, 1000 / 5);
@@ -154,9 +165,7 @@ class World {
   showTryAgainButton() {
     const btn = document.getElementById("tryAgainButton");
     btn.style.display = "block";
-    btn.onclick = () => {
-      location.reload();
-    };
+    btn.onclick = () => location.reload();
   }
 
   draw() {
@@ -173,35 +182,39 @@ class World {
     if (this.statusEndboss.visible) {
       this.addToMap(this.statusEndboss);
     }
-    this.ctx.translate(this.camera_x, 0);
 
+    this.ctx.save();
+    this.ctx.font = "bold 16px 'Zabars', sans-serif";
+    this.ctx.fillStyle = "#f0c040";
+    this.ctx.strokeStyle = "rgba(0,0,0,0.8)";
+    this.ctx.lineWidth = 3;
+    this.ctx.strokeText(`x ${this.coinCount}`, 210, 58);
+    this.ctx.fillText(`x ${this.coinCount}`, 210, 58);
+    this.ctx.strokeText(`x ${this.bottleCount}`, 210, 118);
+    this.ctx.fillText(`x ${this.bottleCount}`, 210, 118);
+    this.ctx.restore();
+
+    this.ctx.translate(this.camera_x, 0);
     this.addObjektToMap(this.level.clouds);
     this.addObjektToMap(this.level.enemies);
     this.addObjektToMap(this.level.collectables);
     this.addToMap(this.character);
     this.addObjektToMap(this.throwableObjekt);
-
     this.ctx.translate(-this.camera_x, 0);
 
     requestAnimationFrame(() => this.draw());
   }
 
   addObjektToMap(obj) {
-    obj.forEach((o) => {
-      this.addToMap(o);
-    });
+    obj.forEach((o) => this.addToMap(o));
   }
 
   addToMap(movObj) {
-    if (movObj.otherDirection) {
-      this.flipImage(movObj);
-    }
+    if (movObj.otherDirection) this.flipImage(movObj);
     movObj.draw(this.ctx);
     movObj.drawFrame(this.ctx);
     movObj.drawFrameOffset(this.ctx);
-    if (movObj.otherDirection) {
-      this.flipImageBack(movObj);
-    }
+    if (movObj.otherDirection) this.flipImageBack(movObj);
   }
 
   flipImage(movObj) {
