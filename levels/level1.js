@@ -10,10 +10,11 @@ const startScreen = "img/9_intro_outro_screens/start/startscreen_1.png";
 const endScreen = "img/9_intro_outro_screens/game_over/oh no you lost!.png";
 const winScreen = "img/You won, you lost/You won A.png";
 
-const totalSections = 8;
+const totalSections = 9;
+const startX =-720;
 
 for (let i = 0; i < totalSections; i++) {
-  const x = i * 720;
+  const x = startX + i * 720;
   const imgIndex = (i % 2) + 1;
 
   backgrounds.push(new BackgroundObjekt(layers[0], x));

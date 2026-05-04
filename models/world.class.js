@@ -202,6 +202,7 @@ class World {
     this.addObjektToMap(this.throwableObjekt);
     this.ctx.translate(-this.camera_x, 0);
 
+
     requestAnimationFrame(() => this.draw());
   }
 
