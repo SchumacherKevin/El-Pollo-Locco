@@ -1,7 +1,30 @@
+const DEBUG = false;
+
 let canvas;
 let world;
 let keyboard = new Keyboard();
 let audioHub = new AudioHub();
+
+function isTouchDevice() {
+  return (
+    /Mobi|Android|iPhone|iPad|iPod|Touch/i.test(navigator.userAgent) ||
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0
+  );
+}
+
+function isMobileDevice() {
+  return isTouchDevice() || window.innerWidth <= 900;
+}
+
+function checkOrientation() {
+  const overlay = document.getElementById("portraitOverlay");
+  if (isTouchDevice() && window.innerHeight > window.innerWidth) {
+    overlay.classList.add("active");
+  } else {
+    overlay.classList.remove("active");
+  }
+}
 
 function showStartScreen() {
   canvas = document.getElementById("gameCanvas");
@@ -41,6 +64,47 @@ function showStartScreen() {
     if (e.target === document.getElementById("settingsOverlay"))
       closeSettings();
   });
+
+  setupMobileControls();
+}
+
+function setupMobileControls() {
+  const btnLeft = document.getElementById("btnLeft");
+  const btnRight = document.getElementById("btnRight");
+  const btnJump = document.getElementById("btnJump");
+  const btnThrow = document.getElementById("btnThrow");
+
+  function bindButton(el, keyProp) {
+    el.addEventListener(
+      "touchstart",
+      (e) => {
+        e.preventDefault();
+        keyboard[keyProp] = true;
+      },
+      { passive: false },
+    );
+    el.addEventListener(
+      "touchend",
+      (e) => {
+        e.preventDefault();
+        keyboard[keyProp] = false;
+      },
+      { passive: false },
+    );
+    el.addEventListener(
+      "touchcancel",
+      (e) => {
+        e.preventDefault();
+        keyboard[keyProp] = false;
+      },
+      { passive: false },
+    );
+  }
+
+  bindButton(btnLeft, "LEFT");
+  bindButton(btnRight, "RIGHT");
+  bindButton(btnJump, "SPACE");
+  bindButton(btnThrow, "d");
 }
 
 function openSettings() {
@@ -105,7 +169,11 @@ window.addEventListener("keyup", (event) => {
   if (event.key == "d") keyboard.d = false;
 });
 
+window.addEventListener("resize", checkOrientation);
+window.addEventListener("orientationchange", checkOrientation);
+
 window.addEventListener("load", () => {
+  setTimeout(checkOrientation, 500);
   showStartScreen();
   audioHub.playAudio(AudioHub.Intro);
 });

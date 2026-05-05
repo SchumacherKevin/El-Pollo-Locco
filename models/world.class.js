@@ -141,6 +141,10 @@ class World {
       const endboss = this.level.enemies.find(
         (e) => e instanceof Endbosslevel1,
       );
+      if (endboss && !endboss.isDead() && this.character.x > endboss.x + endboss.width) {
+        this.character.hitpoints = 0;
+        this.character.deadTime = new Date().getTime();
+      }
       if (this.character.isDead()) {
         this.gameOver = true;
         AudioHub.stopAllSounds();
@@ -202,7 +206,6 @@ class World {
     this.addObjektToMap(this.throwableObjekt);
     this.ctx.translate(-this.camera_x, 0);
 
-
     requestAnimationFrame(() => this.draw());
   }
 
@@ -213,8 +216,10 @@ class World {
   addToMap(movObj) {
     if (movObj.otherDirection) this.flipImage(movObj);
     movObj.draw(this.ctx);
-    movObj.drawFrame(this.ctx);
-    movObj.drawFrameOffset(this.ctx);
+    if (DEBUG) {
+      movObj.drawFrame(this.ctx);
+      movObj.drawFrameOffset(this.ctx);
+    }
     if (movObj.otherDirection) this.flipImageBack(movObj);
   }
 

@@ -2,6 +2,7 @@ class ChickenSmall extends MoveableObjekt {
   height = 65;
   width = 65;
   y = 405;
+  groundY = 405;
   offset = { top: 5, right: 5, bottom: 5, left: 5 };
   Images_Walk = [
     "img/3_enemies_chicken/chicken_small/1_walk/1_w.png",
@@ -18,14 +19,40 @@ class ChickenSmall extends MoveableObjekt {
     this.hitpoints = 20;
     this.animate();
   }
+
   animate() {
+    this.applyChickenGravity();
+    setTimeout(() => {
+      setInterval(() => {
+        if (!this.isDead()) this.jumpChicken();
+      }, 2000);
+    }, Math.random() * 2000);
+
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.Images_Dead);
       } else {
-        this.moveLeft();
         this.playAnimation(this.Images_Walk);
       }
     }, 1000 / 10);
+  }
+
+  jumpChicken() {
+    if (this.y >= this.groundY) {
+      this.speedY = 30;
+    }
+  }
+
+  applyChickenGravity() {
+    setInterval(() => {
+      if (this.y < this.groundY || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+      if (this.y >= this.groundY && this.speedY < 0) {
+        this.y = this.groundY;
+        this.speedY = 0;
+      }
+    }, 1000 / 25);
   }
 }

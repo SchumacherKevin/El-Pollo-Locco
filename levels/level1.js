@@ -10,8 +10,8 @@ const startScreen = "img/9_intro_outro_screens/start/startscreen_1.png";
 const endScreen = "img/9_intro_outro_screens/game_over/oh no you lost!.png";
 const winScreen = "img/You won, you lost/You won A.png";
 
-const totalSections = 9;
-const startX =-720;
+const totalSections = 11;
+const startX = -720;
 
 for (let i = 0; i < totalSections; i++) {
   const x = startX + i * 720;
@@ -40,29 +40,20 @@ function makeChickenSmall(x, speed) {
 let level1;
 
 function initLevel1() {
+  const bigChickenSpeeds = [1.1, 1.8, 1.2, 2.9, 1.8, 1.1, 3.1, 1.7, 3.0, 1.5];
+  const smallChickenSpeeds = [3.7, 4.2, 4.0, 4.6, 4.1, 4.5, 4.8, 3.9];
+  const enemies = [];
+
+  for (let i = 0; i < 9; i++) {
+    enemies.push(makeChicken(400 + i * 650, bigChickenSpeeds[i]));
+  }
+  for (let i = 0; i < 8; i++) {
+    enemies.push(makeChickenSmall(725 + i * 650, smallChickenSpeeds[i]));
+  }
+  enemies.push(new Endbosslevel1());
+
   level1 = new Level(
-    [
-      makeChicken(300, 0.8),
-      makeChicken(600, 1.4),
-      makeChicken(900, 0.9),
-      makeChickenSmall(1100, 2.8),
-      makeChicken(1300, 2.2),
-      makeChickenSmall(1500, 3.2),
-      makeChicken(1700, 1.4),
-      makeChickenSmall(1900, 3.0),
-      makeChicken(2100, 0.8),
-      makeChicken(2300, 2.4),
-      makeChickenSmall(2500, 3.5),
-      makeChicken(2700, 1.3),
-      makeChickenSmall(2900, 3.1),
-      makeChicken(3100, 2.3),
-      makeChickenSmall(3300, 3.4),
-      makeChicken(3500, 0.9),
-      makeChicken(3700, 1.5),
-      makeChickenSmall(3900, 3.6),
-      makeChicken(4100, 2.5),
-      new Endbosslevel1(),
-    ],
+    enemies,
 
     [new Cloud(), new Cloud(), new Cloud(), new Cloud()],
 
