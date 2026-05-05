@@ -12,12 +12,14 @@ class AudioHub {
   static CoinCollect = new Audio("audio/collectibles/collectSound.wav");
   static EndbossApproach = new Audio("audio/endboss/endbossApproach.wav");
   static BottleBreak = new Audio("audio/throwable/bottleBreak.mp3");
+  static Win = new Audio("audio/game/win.mp3");
+  static Lose = new Audio("audio/game/lose.mp3");
   static allSounds = [
     AudioHub.Intro, AudioHub.StartGame, AudioHub.CharacterDamage,
     AudioHub.CharacterDead, AudioHub.CharacterJump, AudioHub.CharacterRun,
     AudioHub.CharacterSnoring, AudioHub.ChickenDead, AudioHub.ChickenDead2,
     AudioHub.BottleCollect, AudioHub.CoinCollect, AudioHub.EndbossApproach,
-    AudioHub.BottleBreak,
+    AudioHub.BottleBreak, AudioHub.Win, AudioHub.Lose,
   ];
   static isMuted = localStorage.getItem("isMuted") === "true";
   static autoplayBlocked = false;

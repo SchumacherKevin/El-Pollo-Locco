@@ -232,8 +232,10 @@ class World {
    * @param {string} screen - Image path of the end screen to display.
    */
   triggerGameOver(screen) {
+    if (this.gameOver) return;
     this.gameOver = true;
     AudioHub.stopAllSounds();
+    audioHub.playAudio(screen === winScreen ? AudioHub.Win : AudioHub.Lose);
     this.showScreen(screen);
   }
 
