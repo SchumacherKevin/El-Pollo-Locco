@@ -59,7 +59,7 @@ class Character extends MoveableObjekt {
     "img/2_character_pepe/4_hurt/H-43.png",
   ];
   world;
-  speed = 10;
+  speed = 20;
   offset = { top: 125, right: 35, bottom: 15, left: 25 };
 
   constructor() {
@@ -93,7 +93,8 @@ class Character extends MoveableObjekt {
         this.world.keyboard.RIGHT ||
         this.world.keyboard.LEFT ||
         this.world.keyboard.SPACE ||
-        this.world.keyboard.UP;
+        this.world.keyboard.UP ||
+        this.world.keyboard.d; 
 
       if (movingRight) {
         this.otherDirection = false;
@@ -166,9 +167,9 @@ class Character extends MoveableObjekt {
           this.playAnimation(this.Images_Jump);
         } else if (movingRight || movingLeft) {
           this.playAnimation(this.Images_Walk);
-        } else if (this.idleTime >= 5000) {
+        } else if (this.idleTime >= 5000 && !wasActive) {
           this.playAnimation(this.Images_LongIdle);
-          if (now - this.lastSnoringSound > 3000 && !this.world.gameOver) {
+          if (now - this.lastSnoringSound > 3000 && !this.world.gameOver && !wasActive) {
             audioHub.playAudio(AudioHub.CharacterSnoring);
             this.lastSnoringSound = now;
           }

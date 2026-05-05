@@ -23,14 +23,14 @@ function showStartScreen() {
   updateMuteLabel();
 
   document.getElementById("startButton").addEventListener("click", startGame);
-  document
-    .getElementById("muteButton")
-    .addEventListener("click", toggleMuteButton);
-  document
-    .getElementById("fullscreenButton")
-    .addEventListener("click", () =>
-      toggleFullscreen(document.getElementById("gameContainer")),
-    );
+  document.getElementById("muteButton").addEventListener("click", (e) => {
+    toggleMuteButton();
+    e.target.blur();
+  });
+  document.getElementById("fullscreenButton").addEventListener("click", (e) => {
+    toggleFullscreen(document.getElementById("gameContainer"));
+    e.target.blur();
+  });
   document
     .getElementById("settingsButton")
     .addEventListener("click", openSettings);
