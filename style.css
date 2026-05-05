@@ -404,6 +404,29 @@ canvas {
   background: rgba(212, 160, 23, 0.2);
 }
 
+#pageFooter {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+#impressumLink {
+  font-family: var(--btn-font);
+  font-size: 20px;
+  color: var(--red-dark);
+  text-decoration: none;
+  letter-spacing: 1px;
+  opacity: 0.75;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+  transition: opacity 0.15s ease;
+}
+
+#impressumLink:hover {
+  opacity: 1;
+}
+
 @media only screen and (max-width: 720px) {
   canvas {
     width: 100%;

@@ -2,13 +2,13 @@ class Endbosslevel1 extends MoveableObjekt {
   height = 400;
   width = 400;
   y = 80;
-  Images_Walk = [
+  imagesWalk = [
     "img/4_enemie_boss_chicken/1_walk/G1.png",
     "img/4_enemie_boss_chicken/1_walk/G2.png",
     "img/4_enemie_boss_chicken/1_walk/G3.png",
     "img/4_enemie_boss_chicken/1_walk/G4.png",
   ];
-  Images_Alert = [
+  imagesAlert = [
     "img/4_enemie_boss_chicken/2_alert/G5.png",
     "img/4_enemie_boss_chicken/2_alert/G6.png",
     "img/4_enemie_boss_chicken/2_alert/G7.png",
@@ -18,7 +18,7 @@ class Endbosslevel1 extends MoveableObjekt {
     "img/4_enemie_boss_chicken/2_alert/G11.png",
     "img/4_enemie_boss_chicken/2_alert/G12.png",
   ];
-  Images_Attack = [
+  imagesAttack = [
     "img/4_enemie_boss_chicken/3_attack/G13.png",
     "img/4_enemie_boss_chicken/3_attack/G14.png",
     "img/4_enemie_boss_chicken/3_attack/G15.png",
@@ -28,27 +28,23 @@ class Endbosslevel1 extends MoveableObjekt {
     "img/4_enemie_boss_chicken/3_attack/G19.png",
     "img/4_enemie_boss_chicken/3_attack/G20.png",
   ];
-  Images_Hurt = [
+  imagesHurt = [
     "img/4_enemie_boss_chicken/4_hurt/G21.png",
     "img/4_enemie_boss_chicken/4_hurt/G22.png",
     "img/4_enemie_boss_chicken/4_hurt/G23.png",
   ];
-  Images_Dead = [
+  imagesDead = [
     "img/4_enemie_boss_chicken/5_dead/G24.png",
     "img/4_enemie_boss_chicken/5_dead/G25.png",
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
-  offset = {
-    top: 50,
-    right: 50,
-    bottom: 50,
-    left: 50,
-  };
+  offset = { top: 50, right: 50, bottom: 50, left: 50 };
 
   alertDistance = 600;
   hasAlerted = false;
   isChasing = false;
+  isThrowing = false;
   alertFrame = 0;
   statusBarActivated = false;
   deathFrame = 0;
@@ -56,17 +52,22 @@ class Endbosslevel1 extends MoveableObjekt {
   constructor() {
     super();
     this.loadImage("img/4_enemie_boss_chicken/1_walk/G1.png");
-    this.loadImages(this.Images_Walk);
-    this.loadImages(this.Images_Alert);
-    this.loadImages(this.Images_Attack);
-    this.loadImages(this.Images_Hurt);
-    this.loadImages(this.Images_Dead);
+    this.loadImages(this.imagesWalk);
+    this.loadImages(this.imagesAlert);
+    this.loadImages(this.imagesAttack);
+    this.loadImages(this.imagesHurt);
+    this.loadImages(this.imagesDead);
     this.hitpoints = 200;
     this.x = 4500;
     this.speed = 5;
     this.animate();
+    this.startThrowingChickens();
   }
 
+  /**
+   * Returns true if the character is within alert range.
+   * @returns {boolean}
+   */
   isInAlertRange() {
     return (
       this.world &&
@@ -75,43 +76,72 @@ class Endbosslevel1 extends MoveableObjekt {
     );
   }
 
+  /** Shows the endboss status bar and plays the approach sound once. */
   activateStatusBar() {
     if (!this.statusBarActivated) {
       this.statusBarActivated = true;
-      if (this.world?.statusEndboss) {
-        this.world.statusEndboss.visible = true;
-      }
+      if (this.world?.statusEndboss) this.world.statusEndboss.visible = true;
       audioHub.playAudio(AudioHub.EndbossApproach);
     }
   }
 
-  animate() {
-    setInterval(() => {
-      if (this.isDead()) {
-        if (this.deathFrame < this.Images_Dead.length) {
-          this.img = this.imageCache[this.Images_Dead[this.deathFrame]];
-          this.deathFrame++;
-        }
-      } else if (this.isHurt()) {
-        this.playAnimation(this.Images_Hurt);
-      } else if (!this.isChasing) {
-        if (this.isInAlertRange()) {
-          this.activateStatusBar();
-          this.playAnimation(this.Images_Alert);
-          this.alertFrame++;
-          if (this.alertFrame >= this.Images_Alert.length) {
-            this.hasAlerted = true;
-            this.isChasing = true;
-            this.currentImage = 0;
-          }
-        } else {
-          this.img = this.imageCache[this.Images_Walk[0]];
-          this.alertFrame = 0;
-        }
-      } else {
-        this.moveLeft();
-        this.playAnimation(this.Images_Walk);
+  /** Advances the alert animation and switches to chase mode when done. */
+  handleAlertPhase() {
+    if (this.isInAlertRange()) {
+      this.activateStatusBar();
+      this.playAnimation(this.imagesAlert);
+      this.alertFrame++;
+      if (this.alertFrame >= this.imagesAlert.length) {
+        this.hasAlerted = true;
+        this.isChasing = true;
+        this.currentImage = 0;
       }
-    }, 1000 / 5);
+    } else {
+      this.img = this.imageCache[this.imagesWalk[0]];
+      this.alertFrame = 0;
+    }
+  }
+
+  /** Advances the death animation frame by frame. */
+  handleDeathAnimation() {
+    if (this.deathFrame < this.imagesDead.length) {
+      this.img = this.imageCache[this.imagesDead[this.deathFrame]];
+      this.deathFrame++;
+    }
+  }
+
+  /** Picks the correct animation/movement for one tick. */
+  animateTick() {
+    if (this.isDead()) {
+      this.handleDeathAnimation();
+    } else if (this.isHurt()) {
+      this.playAnimation(this.imagesHurt);
+    } else if (!this.isChasing) {
+      this.handleAlertPhase();
+    } else if (this.isThrowing) {
+      this.playAnimation(this.imagesAttack);
+    } else {
+      this.moveLeft();
+      this.playAnimation(this.imagesWalk);
+    }
+  }
+
+  /** Starts the animation interval. */
+  animate() {
+    setInterval(() => this.animateTick(), 1000 / 5);
+  }
+
+  /** Starts the periodic chicken-throwing interval. */
+  startThrowingChickens() {
+    setInterval(() => {
+      if (this.isChasing && !this.isDead() && !this.isHurt() && !this.isThrowing && this.world) {
+        this.isThrowing = true;
+        this.currentImage = 0;
+        setTimeout(() => {
+          if (!this.isDead() && this.world) this.world.spawnThrownChicken(this.x + 50, this.y + 180);
+          this.isThrowing = false;
+        }, 1200);
+      }
+    }, 2000);
   }
 }

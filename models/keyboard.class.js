@@ -1,3 +1,4 @@
+/** Tracks the current pressed state of all game control keys. */
 class Keyboard {
   LEFT = false;
   RIGHT = false;
