@@ -4,9 +4,10 @@ class Cloud extends MoveableObjekt {
   height = 250;
   width = 500;
 
-  constructor() {
+  /** @param {number} x - Horizontal start position. */
+  constructor(x) {
     super().loadImage("img/5_background/layers/4_clouds/1.png");
-    this.x = 20 + Math.random() * 500;
+    this.x = x;
     this.speed = 0.15 + Math.random() * 0.25;
     this.animate();
   }

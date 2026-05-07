@@ -1,3 +1,4 @@
+/** Manages the game loop, rendering, collision detection, and all game objects. */
 class World {
   character = new Character();
   level = level1;
@@ -72,7 +73,10 @@ class World {
   handleSingleEnemyCollision(enemy, wasFalling) {
     const charBottom = this.character.y + this.character.height - this.character.offset.bottom;
     const enemyTop = enemy.y + enemy.offset.top;
-    if (wasFalling && charBottom <= enemyTop + 30) {
+    const isStomping = enemy instanceof ChickenSmall
+      ? this.character.speedY <= 0 && charBottom <= enemyTop + 60
+      : wasFalling && charBottom <= enemyTop + 30;
+    if (isStomping) {
       this.handleStompCollision(enemy);
     } else if (!this.character.isHurt()) {
       this.character.hit();
@@ -86,6 +90,7 @@ class World {
    */
   handleStompCollision(enemy) {
     enemy.hit();
+    if (enemy instanceof Endbosslevel1) audioHub.playAudio(AudioHub.ChickenDead);
     if (enemy.isDead()) this.playChickenDeadSound(enemy);
     if (enemy instanceof Endbosslevel1) this.updateEndbossStatus(enemy);
     this.character.speedY = 15;
@@ -141,6 +146,7 @@ class World {
    */
   handleBottleEnemyHit(enemy, bottleIndex) {
     enemy.hit();
+    if (enemy instanceof Endbosslevel1) audioHub.playAudio(AudioHub.ChickenDead);
     if (enemy.isDead()) this.playChickenDeadSound(enemy);
     if (enemy instanceof Endbosslevel1) this.updateEndbossStatus(enemy);
     this.throwableObjekt[bottleIndex].splash();
@@ -271,17 +277,15 @@ class World {
     btn.onclick = () => returnToMenu();
   }
 
-  /** Draws the full scene: background, HUD, world objects, then schedules the next frame. */
+  /** Draws the full scene: background, world objects, then HUD on top. */
   draw() {
     if (this.gameOver) return;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     this.addObjektToMap(this.level.backgroundObjects);
-    this.ctx.translate(-this.camera_x, 0);
-    this.drawHUD();
-    this.ctx.translate(this.camera_x, 0);
     this.drawWorldObjects();
     this.ctx.translate(-this.camera_x, 0);
+    this.drawHUD();
     requestAnimationFrame(() => this.draw());
   }
 
@@ -301,10 +305,10 @@ class World {
     this.ctx.fillStyle = "#f0c040";
     this.ctx.strokeStyle = "rgba(0,0,0,0.8)";
     this.ctx.lineWidth = 3;
-    this.ctx.strokeText(`x ${this.coinCount}`, 210, 58);
-    this.ctx.fillText(`x ${this.coinCount}`, 210, 58);
-    this.ctx.strokeText(`x ${this.bottleCount}`, 210, 118);
-    this.ctx.fillText(`x ${this.bottleCount}`, 210, 118);
+    this.ctx.strokeText(`x ${this.coinCount}`, 210, 76);
+    this.ctx.fillText(`x ${this.coinCount}`, 210, 76);
+    this.ctx.strokeText(`x ${this.bottleCount}`, 210, 116);
+    this.ctx.fillText(`x ${this.bottleCount}`, 210, 116);
     this.ctx.restore();
   }
 

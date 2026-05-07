@@ -1,3 +1,4 @@
+/** The player-controlled character with walk, jump, idle, hurt, and death animations. */
 class Character extends MoveableObjekt {
   height = 280;
   y = 200;
@@ -62,6 +63,7 @@ class Character extends MoveableObjekt {
   speed = 20;
   offset = { top: 125, right: 35, bottom: 15, left: 25 };
 
+  /** Loads all sprite sets and starts gravity and the animation loop. */
   constructor() {
     super();
     this.loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
@@ -124,10 +126,11 @@ class Character extends MoveableObjekt {
     if (movingRight) {
       this.otherDirection = false;
       this.moveRight();
-      this.playRunSound(now);
     } else if (movingLeft) {
       this.otherDirection = true;
       this.moveLeft();
+    }
+    if ((movingLeft || movingRight) && !this.isAboveGround()) {
       this.playRunSound(now);
     } else {
       this.stopRunSound();

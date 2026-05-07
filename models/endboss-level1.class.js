@@ -1,3 +1,4 @@
+/** The level-1 endboss: alerts, chases, and throws small chickens at the character. */
 class Endbosslevel1 extends MoveableObjekt {
   height = 400;
   width = 400;
@@ -49,6 +50,7 @@ class Endbosslevel1 extends MoveableObjekt {
   statusBarActivated = false;
   deathFrame = 0;
 
+  /** Loads all sprite sets, places the boss at the end of the level, and starts its loops. */
   constructor() {
     super();
     this.loadImage("img/4_enemie_boss_chicken/1_walk/G1.png");
@@ -90,7 +92,7 @@ class Endbosslevel1 extends MoveableObjekt {
     if (this.isInAlertRange()) {
       this.activateStatusBar();
       this.playAnimation(this.imagesAlert);
-      this.alertFrame++;
+      this.alertFrame += 2;
       if (this.alertFrame >= this.imagesAlert.length) {
         this.hasAlerted = true;
         this.isChasing = true;
@@ -126,6 +128,22 @@ class Endbosslevel1 extends MoveableObjekt {
     }
   }
 
+  /** @returns {boolean} true for 500 ms after a hit (half the default window). */
+  isHurt() {
+    return new Date().getTime() - this.lastHit < 500;
+  }
+
+  /** Damages the endboss without extending an already-active hurt window. */
+  hit() {
+    this.hitpoints -= 20;
+    if (this.hitpoints <= 0) {
+      this.hitpoints = 0;
+      this.deadTime = new Date().getTime();
+    } else if (!this.isHurt()) {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
   /** Starts the animation interval. */
   animate() {
     setInterval(() => this.animateTick(), 1000 / 5);
@@ -134,7 +152,7 @@ class Endbosslevel1 extends MoveableObjekt {
   /** Starts the periodic chicken-throwing interval. */
   startThrowingChickens() {
     setInterval(() => {
-      if (this.isChasing && !this.isDead() && !this.isHurt() && !this.isThrowing && this.world) {
+      if (this.isChasing && !this.isDead() && !this.isThrowing && this.world) {
         this.isThrowing = true;
         this.currentImage = 0;
         setTimeout(() => {
@@ -142,6 +160,6 @@ class Endbosslevel1 extends MoveableObjekt {
           this.isThrowing = false;
         }, 1200);
       }
-    }, 2000);
+    }, 1600);
   }
 }

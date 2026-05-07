@@ -1,3 +1,4 @@
+/** A small chicken enemy that jumps around and can be thrown by the endboss. */
 class ChickenSmall extends MoveableObjekt {
   height = 65;
   width = 65;
@@ -14,6 +15,7 @@ class ChickenSmall extends MoveableObjekt {
   ];
   imagesDead = ["img/3_enemies_chicken/chicken_small/2_dead/dead.png"];
 
+  /** Loads images and starts the animation and gravity loops. */
   constructor() {
     super();
     this.loadImage("img/3_enemies_chicken/chicken_small/1_walk/1_w.png");

@@ -34,7 +34,7 @@ body {
 
 #imprintCard h2 {
   font-family: var(--btn-font);
-  font-size: 32px;
+  font-size: 43px;
   color: var(--gold-light);
   text-shadow:
     0 2px 8px var(--red-glow),
@@ -59,7 +59,7 @@ body {
 
 .imprint-section h3 {
   font-family: var(--btn-font);
-  font-size: 16px;
+  font-size: 21px;
   color: var(--gold-light);
   letter-spacing: 1px;
   font-weight: normal;
@@ -67,7 +67,7 @@ body {
 
 .imprint-section p {
   font-family: var(--btn-font);
-  font-size: 15px;
+  font-size: 20px;
   color: var(--cream);
   line-height: 1.7;
 }
@@ -83,10 +83,14 @@ body {
   text-decoration: underline;
 }
 
+.legal-symbol {
+  font-family: sans-serif;
+}
+
 .back-btn {
   align-self: center;
   padding: 10px 32px;
-  font-size: 18px;
+  font-size: 24px;
   background-color: var(--red);
   text-decoration: none;
 }
@@ -102,19 +106,19 @@ body {
   }
 
   #imprintCard h2 {
-    font-size: 24px;
+    font-size: 32px;
   }
 
   .imprint-section h3 {
-    font-size: 14px;
+    font-size: 19px;
   }
 
   .imprint-section p {
-    font-size: 13px;
+    font-size: 17px;
   }
 
   .back-btn {
-    font-size: 15px;
+    font-size: 20px;
     padding: 8px 24px;
   }
 }

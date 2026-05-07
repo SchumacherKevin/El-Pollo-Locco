@@ -1,3 +1,4 @@
+/** A normal-sized chicken enemy that walks left once the character starts moving. */
 class Chicken extends MoveableObjekt {
   height = 80;
   width = 80;
@@ -10,6 +11,7 @@ class Chicken extends MoveableObjekt {
   ];
   imagesDead = ["img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
+  /** Loads images and starts the animation loop. */
   constructor() {
     super();
     this.loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
@@ -26,8 +28,6 @@ class Chicken extends MoveableObjekt {
         this.playAnimation(this.imagesDead);
       } else if (this.world && this.world.character.x > 120) {
         this.moveLeft();
-        this.playAnimation(this.imagesWalk);
-      } else {
         this.playAnimation(this.imagesWalk);
       }
     }, 1000 / 10);

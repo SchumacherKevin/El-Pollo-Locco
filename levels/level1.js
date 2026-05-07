@@ -90,11 +90,21 @@ function createCollectables() {
   ];
 }
 
+/**
+ * Creates one cloud per section, evenly spread across the full level width.
+ * @returns {Cloud[]}
+ */
+function createClouds() {
+  return Array.from({ length: totalSections }, (_, i) =>
+    new Cloud(startX + i * 720 + 50 + Math.random() * 400)
+  );
+}
+
 /** Initialises level1 with all enemies, clouds, backgrounds, and collectables. */
 function initLevel1() {
   level1 = new Level(
     createEnemies(),
-    [new Cloud(), new Cloud(), new Cloud(), new Cloud()],
+    createClouds(),
     backgrounds,
     createCollectables(),
   );
