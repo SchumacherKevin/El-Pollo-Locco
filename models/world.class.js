@@ -122,17 +122,20 @@ class World {
 
   /** Checks all thrown bottles against all enemies for collisions. */
   handleBottleCollisions() {
-    this.throwableObjekt.forEach((bottle, bottleIndex) => {
+    for (let i = this.throwableObjekt.length - 1; i >= 0; i--) {
+      const bottle = this.throwableObjekt[i];
+      if (bottle.splashDone) { this.throwableObjekt.splice(i, 1); continue; }
+      if (bottle.splashing) continue;
       this.level.enemies.forEach((enemy) => {
         if (!enemy.isDead() && bottle.isColliding(enemy)) {
-          this.handleBottleEnemyHit(enemy, bottleIndex);
+          this.handleBottleEnemyHit(enemy, i);
         }
       });
-    });
+    }
   }
 
   /**
-   * Resolves a bottle hitting an enemy: damages it and removes the bottle.
+   * Resolves a bottle hitting an enemy: damages it and starts the splash animation.
    * @param {MoveableObjekt} enemy - The enemy that was hit.
    * @param {number} bottleIndex - Index of the bottle in throwableObjekt.
    */
@@ -140,8 +143,7 @@ class World {
     enemy.hit();
     if (enemy.isDead()) this.playChickenDeadSound(enemy);
     if (enemy instanceof Endbosslevel1) this.updateEndbossStatus(enemy);
-    audioHub.playAudio(AudioHub.BottleBreak);
-    this.throwableObjekt.splice(bottleIndex, 1);
+    this.throwableObjekt[bottleIndex].splash();
   }
 
   /** Starts the throw-input check interval. */
