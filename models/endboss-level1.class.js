@@ -39,7 +39,7 @@ class Endbosslevel1 extends MoveableObjekt {
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
-  offset = { top: 50, right: 50, bottom: 50, left: 50 };
+  offset = { top: 50, right: 50, bottom: 50, left: 80 };
 
   alertDistance = 600;
   hasAlerted = false;

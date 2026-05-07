@@ -2,10 +2,10 @@ class Coin extends Collectables {
   imagesCoin = ["img/8_coin/coin_1.png", "img/8_coin/coin_2.png"];
 
   offset = {
-    top: 10,
-    right: 10,
-    bottom: 10,
-    left: 10,
+    top: 25,
+    right: 25,
+    bottom: 25,
+    left: 25,
   };
 
   /**
