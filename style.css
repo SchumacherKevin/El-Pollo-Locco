@@ -580,4 +580,8 @@ canvas {
     font-size: 15px;
     padding: 6px 18px;
   }
+
+  #fullscreenButton {
+    display: none;
+  }
 }
