@@ -193,7 +193,7 @@ canvas {
   cursor: pointer;
   opacity: 0.85;
   transition: opacity 0.15s ease;
-  display: none;
+  display: block;
   z-index: 10;
 }
 

@@ -82,7 +82,6 @@ function drawStartImage(ctx) {
 function showMenuButtons() {
   document.getElementById("startButton").style.display = "block";
   document.getElementById("settingsButton").style.display = "block";
-  document.getElementById("fullscreenButton").style.display = "block";
 }
 
 /** Registers click listeners on all menu and settings buttons. */
