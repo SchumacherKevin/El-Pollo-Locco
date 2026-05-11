@@ -499,9 +499,6 @@ canvas {
 }
 
 @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
-  #mobilHub {
-    display: flex;
-  }
 
   h1 {
     display: none;

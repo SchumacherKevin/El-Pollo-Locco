@@ -14,6 +14,7 @@ class World {
   gameOver = false;
   coinCount = 0;
   bottleCount = 0;
+  totalCoins = 0;
 
   /**
    * @param {HTMLCanvasElement} canvas - The game canvas element.
@@ -23,6 +24,7 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.totalCoins = this.level.collectables.filter((c) => c instanceof Coin).length;
     this.statusEndboss.visible = false;
     this.draw();
     this.setWorld();
@@ -199,7 +201,7 @@ class World {
     if (item instanceof Coin) {
       audioHub.playAudio(AudioHub.CoinCollect);
       this.coinCount++;
-      this.statusCoins.setPercentage(Math.min(100, this.statusCoins.percentage + 20));
+      this.statusCoins.setPercentage((this.coinCount / this.totalCoins) * 100);
     } else if (item instanceof SalsaBottle) {
       audioHub.playAudio(AudioHub.BottleCollect);
       this.bottleCount = Math.min(15, this.bottleCount + 1);

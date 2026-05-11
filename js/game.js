@@ -28,6 +28,7 @@ function resetMenuButtons() {
   document.getElementById("tryAgainButton").style.display = "none";
   document.getElementById("startButton").style.display = "block";
   document.getElementById("settingsButton").style.display = "block";
+  document.getElementById("mobilHub").style.display = "none";
 }
 
 let canvas;
@@ -145,6 +146,7 @@ function closeSettings() {
 function startGame() {
   document.getElementById("startButton").style.display = "none";
   document.getElementById("settingsButton").style.display = "none";
+  if (isMobileDevice()) document.getElementById("mobilHub").style.display = "flex";
   audioHub.playAudio(AudioHub.StartGame);
   audioHub.stopOneAudio(AudioHub.Intro);
   init();
@@ -172,8 +174,9 @@ function init() {
 
 /** Toggles between fullscreen and windowed mode. */
 function toggleFullscreen() {
-  if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-    document.documentElement.requestFullscreen();
+  const canvas = document.getElementById("gameCanvas");
+  if (!document.fullscreenElement) {
+    canvas.requestFullscreen();
   } else {
     document.exitFullscreen();
   }

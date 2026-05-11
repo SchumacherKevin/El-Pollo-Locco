@@ -86,6 +86,7 @@ class Character extends MoveableObjekt {
     this.isRunning = false;
     this.lastRunSound = 0;
     this.lastSnoringSound = 0;
+    this.jumpAnimationFrame = 0;
   }
 
   /** Starts the main animation interval. */
@@ -162,6 +163,7 @@ class Character extends MoveableObjekt {
     const kb = this.world.keyboard;
     if ((kb.SPACE || kb.UP) && !this.isAboveGround()) {
       this.jump();
+      this.jumpAnimationFrame = 0;
       if (!this.jumpSoundPlayed) {
         audioHub.playAudio(AudioHub.CharacterJump);
         this.jumpSoundPlayed = true;
@@ -231,7 +233,10 @@ class Character extends MoveableObjekt {
    */
   playActiveAnimation(movingLeft, movingRight, wasActive, now) {
     if (this.isAboveGround()) {
-      this.playAnimation(this.imagesJump);
+      const frame = Math.min(this.jumpAnimationFrame, this.imagesJump.length - 1);
+      const path = this.imagesJump[frame];
+      if (this.imageCache[path]) this.img = this.imageCache[path];
+      this.jumpAnimationFrame++;
     } else if (movingRight || movingLeft) {
       this.playAnimation(this.imagesWalk);
     } else if (this.idleTime >= 5000 && !wasActive) {

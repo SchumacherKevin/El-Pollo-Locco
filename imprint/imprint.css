@@ -59,7 +59,7 @@ body {
 
 .imprint-section h3 {
   font-family: var(--btn-font);
-  font-size: 21px;
+  font-size: 28px;
   color: var(--gold-light);
   letter-spacing: 1px;
   font-weight: normal;
@@ -67,7 +67,7 @@ body {
 
 .imprint-section p {
   font-family: var(--btn-font);
-  font-size: 20px;
+  font-size: 24px;
   color: var(--cream);
   line-height: 1.7;
 }
