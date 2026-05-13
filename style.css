@@ -70,6 +70,16 @@ h1 {
   height: 100vh;
   outline: none;
   box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+#gameContainer:fullscreen canvas,
+#gameContainer:-webkit-full-screen canvas {
+  width: 100%;
+  height: 100%;
 }
 
 canvas {

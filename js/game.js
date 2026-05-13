@@ -174,9 +174,9 @@ function init() {
 
 /** Toggles between fullscreen and windowed mode. */
 function toggleFullscreen() {
-  const canvas = document.getElementById("gameCanvas");
+  const container = document.getElementById("gameContainer");
   if (!document.fullscreenElement) {
-    canvas.requestFullscreen();
+    container.requestFullscreen();
   } else {
     document.exitFullscreen();
   }
